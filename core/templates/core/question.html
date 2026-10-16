@@ -1,0 +1,138 @@
+{% extends "core/practice_layout.html" %}
+
+
+{% block title %}
+    Practice - Question {{ question_number }}
+{% endblock %}
+
+
+{% block subject %}
+    {{ question.get_subject_display }}
+{% endblock %}
+
+
+{% block domain %}
+    {{ question.get_domain_display }}
+{% endblock %}
+
+
+{% block skill %}
+    {{ question.get_skill_display }}
+{% endblock %}
+
+
+{% block question_number %}
+    {{ question_number }} of {{ total_questions }}
+{% endblock %}
+
+
+{% block question %}
+    {{ question.question }}
+{% endblock %}
+
+
+{% block answer_area %}
+
+    {% if question.question_type == "mc" %}
+
+        <!-- Multiple Choice -->
+
+        <div class="d-grid gap-3">
+
+            <input
+                type="radio"
+                class="btn-check"
+                name="answer"
+                value="A"
+                id="choice-a"
+                autocomplete="off"
+                {% if question_record.user_answer == "A" %}checked{% endif %}
+            >
+            <label
+                class="btn btn-outline-secondary text-start p-3"
+                for="choice-a"
+            >
+                <strong>A.</strong> {{ question.choice_a }}
+            </label>
+
+
+            <input
+                type="radio"
+                class="btn-check"
+                name="answer"
+                value="B"
+                id="choice-b"
+                autocomplete="off"
+                {% if question_record.user_answer == "B" %}checked{% endif %}
+            >
+            <label
+                class="btn btn-outline-secondary text-start p-3"
+                for="choice-b"
+            >
+                <strong>B.</strong> {{ question.choice_b }}
+            </label>
+
+
+            <input
+                type="radio"
+                class="btn-check"
+                name="answer"
+                value="C"
+                id="choice-c"
+                autocomplete="off"
+                {% if question_record.user_answer == "C" %}checked{% endif %}
+            >
+            <label
+                class="btn btn-outline-secondary text-start p-3"
+                for="choice-c"
+            >
+                <strong>C.</strong> {{ question.choice_c }}
+            </label>
+
+
+            <input
+                type="radio"
+                class="btn-check"
+                name="answer"
+                value="D"
+                id="choice-d"
+                autocomplete="off"
+                {% if question_record.user_answer == "D" %}checked{% endif %}
+            >
+            <label
+                class="btn btn-outline-secondary text-start p-3"
+                for="choice-d"
+            >
+                <strong>D.</strong> {{ question.choice_d }}
+            </label>
+
+        </div>
+
+    {% elif question.question_type == "fb" %}
+
+        <!-- Fill in the Blank -->
+
+        <div class="mb-3">
+
+            <label
+                for="answer"
+                class="form-label"
+            >
+                Answer:
+            </label>
+
+            <input
+                type="text"
+                class="form-control form-control-lg"
+                id="answer"
+                name="answer"
+                autocomplete="off"
+                placeholder="Enter your answer"
+                value="{{ question_record.user_answer|default:'' }}"
+            >
+
+        </div>
+
+    {% endif %}
+
+{% endblock %}

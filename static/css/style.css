@@ -1,0 +1,4 @@
+/* For dropdown */
+.dropdown-menu {
+    --bs-dropdown-link-active-bg: var(--bs-secondary);
+}

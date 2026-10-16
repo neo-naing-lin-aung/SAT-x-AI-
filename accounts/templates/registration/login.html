@@ -1,0 +1,46 @@
+<!-- Login Page  -->
+
+{% extends "core/layout.html" %}
+
+{% block title %}
+    Login
+{% endblock %}
+
+{% block content %}
+
+    <div class="container card p-4 shadow" style="max-width: 400px;">
+        <h2 class="text-center mb-4">Log In to Your Account</h2>
+
+        <!-- Display login errors if credentials are wrong -->
+        {% if form.errors %}
+            <div class="alert alert-danger text-sm">
+                Your username and password didn't match. Please try again.
+            </div>
+        {% endif %}
+
+        <form method="post" action="{% url 'accounts:login' %}">
+            {% csrf_token %}
+
+            <!-- Username Field -->
+            <div class="mb-3">
+                <label for="id_username" class="form-label">Username</label>
+                <input type="text" name="username" id="id_username" class="form-control" required autocomplete="off">
+            </div>
+
+            <!-- Password Field -->
+            <div class="mb-3">
+                <label for="id_password" class="form-label">Password</label>
+                <input type="password" name="password" id="id_password" class="form-control" required autocomplete="off">
+            </div>
+
+            <div class="mb-3 text-center text-muted">
+                Don't have an account? <a href="{% url 'accounts:register' %}" class="text-decoration-none">Sign up</a>
+            </div>
+
+            <button type="submit" class="btn btn-secondary w-100">Sign In</button>
+        </form>
+    </div>
+{% endblock %}
+
+
+

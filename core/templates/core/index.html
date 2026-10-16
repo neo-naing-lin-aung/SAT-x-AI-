@@ -1,0 +1,243 @@
+<!-- Home Page  -->
+
+{% extends "core/layout.html" %}
+
+{% block content %}
+    <main class="container py-3">
+
+    <!-- Hero Section -->
+    <section class="text-center py-5">
+
+        <span class="badge bg-secondary-subtle text-secondary px-3 py-2 mb-3">
+            SAT Practice × AI
+        </span>
+
+        <h1 class="display-4 fw-bold mb-3">
+            Study Smarter.<br>
+            <span class="text-secondary">Score Higher.</span>
+        </h1>
+
+        <p class="lead text-secondary mx-auto mb-4" style="max-width: 650px;">
+            Practice SAT questions, understand your mistakes, and get
+            AI-powered explanations when you need help.
+        </p>
+
+        <div class="d-flex justify-content-center gap-3 flex-wrap">
+            <a href="{% url 'core:practice' %}" class="btn btn-secondary btn-lg px-4">
+                Start Practicing
+            </a>
+
+            <a href="{% url 'core:progress' %}" class="btn btn-outline-secondary btn-lg px-4">
+                View Progress 
+            </a>
+        </div>
+
+    </section>
+
+
+    <!-- Features -->
+    <section class="py-4">
+
+        <div class="row g-4">
+
+            <!-- SAT Practice -->
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm p-4 bg-body-tertiary rounded">
+
+                    <div class="mb-3">
+                        <span class="fs-2">📚</span>
+                    </div>
+
+                    <h4 class="fw-bold">
+                        SAT Practice
+                    </h4>
+
+                    <p class="text-secondary mb-0">
+                        Practice questions organized by section,
+                        domain, and difficulty level.
+                    </p>
+
+                </div>
+            </div>
+
+
+            <!-- Explanations -->
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm p-4 bg-body-tertiary rounded">
+
+                    <div class="mb-3">
+                        <span class="fs-2">💡</span>
+                    </div>
+
+                    <h4 class="fw-bold">
+                        Clear Explanations
+                    </h4>
+
+                    <p class="text-secondary mb-0">
+                        Review answers with step-by-step explanations
+                        so you understand why an answer is correct.
+                    </p>
+
+                </div>
+            </div>
+
+
+            <!-- AI Assistant -->
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm p-4 bg-body-tertiary rounded">
+
+                    <div class="mb-3">
+                        <span class="fs-2">🤖</span>
+                    </div>
+
+                    <h4 class="fw-bold">
+                        AI Assistant
+                    </h4>
+
+                    <p class="text-secondary mb-0">
+                        Stuck on a question? Ask AI for another
+                        explanation and learn the solution step by step.
+                    </p>
+
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- How It Works -->
+    <section class="py-5 mt-4">
+
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">
+                How It Works
+            </h2>
+
+            <p class="text-secondary">
+                A simple way to turn mistakes into progress.
+            </p>
+        </div>
+
+        <div class="row g-4">
+
+            <!-- Step 1 -->
+            <div class="col-md-6 col-lg-3">
+                <div class="text-center px-3">
+
+                    <div class="rounded-circle bg-secondary text-white
+                                d-flex align-items-center justify-content-center
+                                mx-auto mb-3"
+                        style="width: 55px; height: 55px;">
+                        1
+                    </div>
+
+                    <h5 class="fw-bold">
+                        Customize Your Practice
+                    </h5>
+
+                    <p class="text-secondary">
+                        Choose the topic, domain, and difficulty, then 
+                        select how many questions you want.
+                    </p>
+
+                </div>
+            </div>
+
+
+            <!-- Step 2 -->
+            <div class="col-md-6 col-lg-3">
+                <div class="text-center px-3">
+
+                    <div class="rounded-circle bg-secondary text-white
+                                d-flex align-items-center justify-content-center
+                                mx-auto mb-3"
+                        style="width: 55px; height: 55px;">
+                        2
+                    </div>
+
+                    <h5 class="fw-bold">
+                        Set Your Timer
+                    </h5>
+
+                    <p class="text-secondary">
+                        Set a time limit and challenge yourself
+                        to practice under realistic test conditions.
+                    </p>
+
+                </div>
+            </div>
+
+
+            <!-- Step 3 -->
+            <div class="col-md-6 col-lg-3">
+                <div class="text-center px-3">
+
+                    <div class="rounded-circle bg-secondary text-white
+                                d-flex align-items-center justify-content-center
+                                mx-auto mb-3"
+                        style="width: 55px; height: 55px;">
+                        3
+                    </div>
+
+                    <h5 class="fw-bold">
+                        Solve the Questions
+                    </h5>
+
+                    <p class="text-secondary">
+                        Work through each question and submit
+                        your answers before the timer runs out.
+                    </p>
+
+                </div>
+            </div>
+
+
+            <!-- Step 4 -->
+            <div class="col-md-6 col-lg-3">
+                <div class="text-center px-3">
+
+                    <div class="rounded-circle bg-secondary text-white
+                                d-flex align-items-center justify-content-center
+                                mx-auto mb-3"
+                        style="width: 55px; height: 55px;">
+                        4
+                    </div>
+
+                    <h5 class="fw-bold">
+                        Review & Ask AI
+                    </h5>
+
+                    <p class="text-secondary">
+                        Check the explanation for each answer
+                        or ask AI for a step-by-step explanation.
+                    </p>
+
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- Bottom Call-To-Action -->
+    <section class="bg-body-tertiary rounded-4 text-center p-5 my-5">
+
+        <h2 class="fw-bold mb-3">
+            Ready to practice?
+        </h2>
+
+        <p class="text-secondary mb-4">
+            Start working on SAT questions and build your confidence.
+        </p>
+
+        <a href="{% url 'core:practice' %}" class="btn btn-secondary px-4">
+            Start Practicing
+        </a>
+
+    </section>
+
+</main>
+
+{% endblock %}

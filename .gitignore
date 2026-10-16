@@ -1,0 +1,15 @@
+# Environment variables and API keys
+.env
+
+# Python cache files
+__pycache__/
+*.py[cod]
+
+# Virtual environment
+psai_env/
+
+# Django database
+db.sqlite3
+
+# macOS files
+.DS_Store

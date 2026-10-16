@@ -1,0 +1,264 @@
+<!-- Result Page For Practice Session -->
+ 
+{% extends "core/layout.html" %}
+
+{% block title %}
+    Result
+{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <!-- Page Header -->
+    <div class="text-center mb-5">
+        <h1 class="fw-bold">Practice Result</h1>
+        <p class="text-body-secondary mb-0">
+            Here is your performance summary.
+        </p>
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- Result Cards -->
+    <!-- ========================= -->
+
+    <div class="row g-3 mb-4">
+
+        <!-- Correct -->
+        <div class="col-6 col-md">
+            <div class="card h-100 text-center shadow-sm border-0">
+                <div class="card-body">
+                    <div class="fs-2 fw-bold text-success">
+                        {{ correct }}
+                    </div>
+                    <div class="text-body-secondary">
+                        Correct
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Incorrect -->
+        <div class="col-6 col-md">
+            <div class="card h-100 text-center shadow-sm border-0">
+                <div class="card-body">
+                    <div class="fs-2 fw-bold text-danger">
+                        {{ incorrect }}
+                    </div>
+                    <div class="text-body-secondary">
+                        Incorrect
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Unanswered -->
+        <div class="col-6 col-md">
+            <div class="card h-100 text-center shadow-sm border-0">
+                <div class="card-body">
+                    <div class="fs-2 fw-bold text-warning">
+                        {{ unanswered }}
+                    </div>
+                    <div class="text-body-secondary">
+                        Unanswered
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total -->
+        <div class="col-6 col-md">
+            <div class="card h-100 text-center shadow-sm border-0">
+                <div class="card-body">
+                    <div class="fs-2 fw-bold">
+                        {{ total }}
+                    </div>
+                    <div class="text-body-secondary">
+                        Total
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Accuracy -->
+        <div class="col-12 col-md">
+            <div class="card h-100 text-center shadow-sm border-0">
+                <div class="card-body">
+                    <div class="fs-2 fw-bold text-primary">
+                        {{ accuracy }}%
+                    </div>
+                    <div class="text-body-secondary">
+                        Accuracy
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- Practice Information -->
+    <!-- ========================= -->
+
+    <div class="card shadow-sm border-0 mb-5">
+        <div class="card-body p-4">
+
+            <h5 class="fw-bold mb-4">
+                Practice Information
+            </h5>
+
+            <div class="row g-4">
+
+                <!-- Subject -->
+                <div class="col-6 col-md">
+                    <div class="text-body-secondary small">
+                        Subject
+                    </div>
+                    <div class="fw-semibold">
+                        {{ subject }}
+                    </div>
+                </div>
+
+                <!-- Domain -->
+                <div class="col-6 col-md">
+                    <div class="text-body-secondary small">
+                        Domain
+                    </div>
+                    <div class="fw-semibold">
+                        {{ domain }}
+                    </div>
+                </div>
+
+                <!-- Difficulty -->
+                <div class="col-6 col-md">
+                    <div class="text-body-secondary small">
+                        Difficulty
+                    </div>
+                    <div class="fw-semibold">
+                        {{ difficulty }}
+                    </div>
+                </div>
+
+                <!-- Timer -->
+                <div class="col-6 col-md">
+                    <div class="text-body-secondary small">
+                        Timer
+                    </div>
+                    <div class="fw-semibold">
+                        {{ practice.timer }} min
+                    </div>
+                </div>
+
+                <!-- Time Used -->
+                <div class="col-6 col-md">
+                    <div class="text-body-secondary small">
+                        Time Used
+                    </div>
+                    <div class="fw-semibold">
+                        {{ time_used }}
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- Question Review -->
+    <!-- ========================= -->
+
+    <div class="card shadow-sm border-0">
+
+        <div class="card-body p-4">
+
+            <h5 class="fw-bold mb-4">
+                Question Review
+            </h5>
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle">
+
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Question</th>
+                            <th scope="col">Your Answer</th>
+                            <th scope="col">Correct Answer</th>
+                            <th scope="col" class="text-end">Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for record in question_records %}
+
+                        <tr>
+
+                            <!-- Order -->
+                            <td class="fw-semibold">
+                                {{ record.order }}
+                            </td>
+
+                            <!-- Question -->
+                            <td>
+                                <div class="text-truncate" style="max-width: 300px;">
+                                    {{ record.question.question }}
+                                </div>
+                            </td>
+
+                            <!-- User Answer -->
+                            <td>
+                                {% if record.user_answer %}
+                                    {{ record.user_answer }}
+                                {% else %}
+                                    <span class="text-body-secondary">
+                                        Unanswered
+                                    </span>
+                                {% endif %}
+                            </td>
+
+                            <!-- Correct Answer -->
+                            <td>
+                                {{ record.question.answer }}
+                            </td>
+
+                            <!-- View -->
+                            <td class="text-end">
+                                <a
+                                    href="{% url 'core:review' practice.id record.order %}"
+                                    class="btn btn-sm btn-secondary"
+                                >
+                                    View
+                                </a>
+                            </td>
+
+                        </tr>
+
+                        {% empty %}
+
+                        <tr>
+                            <td colspan="5" class="text-center text-body-secondary py-4">
+                                No questions found.
+                            </td>
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,208 @@
+<!-- Practice Page  -->
+
+{% extends "core/layout.html" %}
+
+{% block title %}
+    Practice
+{% endblock %}
+
+{% block content %}
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-8 col-lg-6">
+
+                <!-- Header -->
+                <div class="text-center mb-5">
+                    <h1 class="fw-bold mb-2">Setup Your Practice Session</h1>
+                </div>
+
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close"
+                                    data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <!-- Setup Card -->
+                <div class="card border-0 shadow rounded-4">
+                    <div class="card-body p-4 p-md-5">
+
+                        <form method="post">
+                            {% csrf_token %}
+
+                            <!-- Subject -->
+                            <div class="mb-4">
+                                <label for="{{ form.subject.id_for_label }}"
+                                    class="form-label fw-semibold">
+                                    {{ form.subject.label }}
+                                </label>
+
+                                {{ form.subject }}
+
+                                {% if form.subject.errors %}
+                                    <div class="text-danger small mt-1">
+                                        {{ form.subject.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Domain -->
+                            <div class="mb-4">
+                                <label for="{{ form.domain.id_for_label }}" class="form-label fw-semibold">
+                                    {{ form.domain.label }}
+                                </label>
+
+                                {{ form.domain }}
+
+                                {% if form.domain.errors %}
+                                    <div class="text-danger small mt-2">
+                                        {{ form.domain.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Skill -->
+                            <div class="mb-4">
+                                <label for="{{ form.skill.id_for_label }}"
+                                    class="form-label fw-semibold">
+                                    {{ form.skill.label }}
+                                </label>
+
+                                {{ form.skill }}
+
+                                {% if form.skill.errors %}
+                                    <div class="text-danger small mt-1">
+                                        {{ form.skill.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Number of Questions -->
+                            <div class="mb-4">
+                                <label for="{{ form.num_questions.id_for_label }}"
+                                    class="form-label fw-semibold">
+                                    {{ form.num_questions.label }}
+                                </label>
+
+                                {{ form.num_questions }}
+
+                                <div class="form-text">
+                                    Choose between 1 and 40 questions.
+                                </div>
+
+                                {% if form.num_questions.errors %}
+                                    <div class="text-danger small mt-1">
+                                        {{ form.num_questions.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Timer -->
+                            <div class="mb-4">
+                                <label for="{{ form.timer.id_for_label }}"
+                                    class="form-label fw-semibold">
+                                    {{ form.timer.label }}
+                                </label>
+
+                                {{ form.timer }}
+
+                                <div class="form-text">
+                                    Set a practice timer from 1 to 120 minutes.
+                                </div>
+
+                                {% if form.timer.errors %}
+                                    <div class="text-danger small mt-1">
+                                        {{ form.timer.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Submit -->
+                            <div class="d-grid mt-4">
+                                <button type="submit"
+                                        class="btn btn-secondary btn-lg rounded-3">
+                                    Start Practice
+                                </button>
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Dynamic Subject-Domain Script -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const subjectSelect = document.getElementById("id_subject");
+            const domainSelect = document.getElementById("id_domain");
+
+            if (!subjectSelect || !domainSelect) return;
+
+            // Mapping corresponding domains for each subject
+            const domainMapping = {
+                "math": [
+                    { value: "algebra", text: "Algebra" },
+                    { value: "advanced_math", text: "Advanced Math" },
+                    { value: "psda", text: "Problem-Solving and Data Analysis" },
+                    { value: "geometry", text: "Geometry and Trigonometry" }
+                ],
+                "rw": [
+                    { value: "craft", text: "Craft and Structure" },
+                    { value: "information", text: "Information and Ideas" },
+                    { value: "expression", text: "Expression of Ideas" },
+                    { value: "sec", text: "Standard English Conventions" }
+                ]
+            };
+
+            function updateDomainOptions(preserveValue) {
+                const selectedSubject = subjectSelect.value;
+                const previousDomainValue = domainSelect.value;
+
+                // Clear current options
+                domainSelect.innerHTML = "";
+
+                // Default placeholder
+                const placeholder = document.createElement("option");
+                placeholder.value = "";
+                placeholder.textContent = "Select Domain";
+                domainSelect.appendChild(placeholder);
+
+                // Populate matching domains if a subject is selected
+                if (selectedSubject && domainMapping[selectedSubject]) {
+                    domainSelect.disabled = false;
+
+                    domainMapping[selectedSubject].forEach(function (domain) {
+                        const option = document.createElement("option");
+                        option.value = domain.value;
+                        option.textContent = domain.text;
+
+                        // Preserve domain choice if returning from form validation errors
+                        if (preserveValue && domain.value === previousDomainValue) {
+                            option.selected = true;
+                        }
+
+                        domainSelect.appendChild(option);
+                    });
+                } else {
+                    // Disable domain field if no subject selected
+                    domainSelect.disabled = true;
+                }
+            }
+
+            // Listen for changes on the subject select input
+            subjectSelect.addEventListener("change", function () {
+                updateDomainOptions(false);
+            });
+
+            // Run once on page load (handles pre-filled forms or validation reloads)
+            updateDomainOptions(true);
+        });
+    </script>
+{% endblock %}

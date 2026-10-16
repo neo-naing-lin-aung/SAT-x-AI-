@@ -1,0 +1,291 @@
+<!-- Practice Question Layout -->
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>{% block title %}Practice{% endblock %}</title>
+
+        <!-- Bootstrap -->
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+        >
+
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+        >
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+        <!-- KATEX  -->
+        <link rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css">
+
+        <script defer
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js">
+        </script>
+
+        <script defer
+                src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js">
+        </script>
+
+    </head>
+
+
+    <body class="content">
+
+        <!-- Practice Header -->
+        <header class="sticky-top bg-body border-bottom">
+
+            <div class="container py-3">
+
+                <div class="d-flex justify-content-between align-items-center">
+
+                    <!-- Logo + Practice Information -->
+                    <div class="d-flex align-items-center gap-3">
+
+                        <span class="navbar-brand fw-bold mb-0">
+                            SAT × AI
+                        </span>
+
+                        <div class="d-flex align-items-center gap-2">
+
+                            <span class="badge text-bg-secondary">
+                                {% block subject %}{% endblock %}
+                            </span>
+
+                            <span class="badge text-bg-secondary">
+                                {% block domain %}{% endblock %}
+                            </span>
+
+                            <span class="badge text-bg-secondary">
+                                {% block skill %}{% endblock %}
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Theme Button -->
+                    <button
+                        id="theme-toggle"
+                        class="btn btn-outline-secondary btn-sm rounded-circle d-flex align-items-center justify-content-center"
+                        type="button"
+                        aria-label="Toggle theme"
+                        style="width: 38px; height: 38px;"
+                    >
+                        <i id="theme-icon" class="bi bi-moon-fill"></i>
+                    </button>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- Main Practice Area -->
+        <main class="container py-4">
+
+            <!-- Practice Card -->
+            <div class="card shadow-sm mx-auto" style="max-width: 850px;">
+
+                <!-- Question Header -->
+                <div class="card-header">
+
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <span>
+                            Question
+                            {% block question_number %}{% endblock %}
+                        </span>
+
+
+                        <!-- Timer -->
+                        <span class="badge text-bg-secondary">
+                            <i class="bi bi-clock me-1"></i>
+
+                            <span
+                                id="timer"
+                                data-duration="{{ remaining_seconds }}"
+                                data-result-url="{% url 'core:practice_result' practice.id %}"
+                            >
+                                00:00
+                            </span>
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Question + Answer -->
+                <div class="card-body p-4 p-md-5">
+
+                    <!-- Question -->
+                    <div class="mb-4 fs-5">
+
+                        {% block question %}
+                        {% endblock %}
+
+                    </div>
+
+
+                    <!-- Answer Form -->
+                    <form method="POST">
+
+                        {% csrf_token %}
+
+
+                        <!-- Answer Area -->
+                        {% block answer_area %}
+                        {% endblock %}
+
+
+                        <!-- Navigation -->
+                        <div class="d-flex justify-content-between mt-4 pt-3 border-top">
+
+                            <!-- Previous -->
+                            {% if question_number > 1 %}
+
+                                <a
+                                    href="{% url 'core:question' practice_id=practice.id question_number=question_number|add:'-1' %}"
+                                    class="btn btn-secondary"
+                                >
+                                    Previous
+                                </a>
+
+                            {% else %}
+
+                                <button
+                                    type="button"
+                                    class="btn btn-secondary"
+                                    disabled
+                                >
+                                    Previous
+                                </button>
+
+                            {% endif %}
+
+
+                            <!-- Next -->
+                            <button
+                                type="submit"
+                                name="action"
+                                value="next"
+                                class="btn btn-secondary"
+                            >
+                                {% if question_number == total_questions %}
+                                    Finish
+                                {% else %}
+                                    Next
+                                {% endif %}
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </main>
+
+
+        <!-- Bootstrap JavaScript -->
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+        </script>
+
+
+        <!-- JS -->
+        <script src="{% static 'js/script.js' %}"></script>
+        <script>
+            // Timer 
+            document.addEventListener("DOMContentLoaded", function () {
+
+                const timerElement = document.getElementById("timer");
+
+                if (!timerElement) {
+                    return;
+                }
+
+                // Get remaining seconds from Django
+                let totalSeconds = parseInt(
+                    timerElement.dataset.duration,
+                    10
+                );
+
+                const resultUrl = timerElement.dataset.resultUrl;
+
+                if (
+                    !Number.isFinite(totalSeconds) ||
+                    totalSeconds < 0 ||
+                    !resultUrl
+                ) {
+                    return;
+                }
+
+                let timerInterval;
+
+                function updateTimer() {
+
+                    const minutes = Math.floor(totalSeconds / 60);
+                    const seconds = totalSeconds % 60;
+
+                    timerElement.textContent =
+                        `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+
+                    if (totalSeconds <= 0) {
+                        clearInterval(timerInterval);
+                        window.location.replace(resultUrl);
+                        return;
+                    }
+
+                    totalSeconds--;
+                }
+
+                // Display timer immediately
+                updateTimer();
+
+                // Update every second
+                timerInterval = setInterval(updateTimer, 1000);
+
+            });
+
+            // Render Math 
+            function renderMath(element) {
+                if (!element || !window.renderMathInElement) return;
+
+                renderMathInElement(element, {
+                    delimiters: [
+                        { left: "\\(", right: "\\)", display: false },
+                        { left: "\\[", right: "\\]", display: true },
+                        { left: "$$", right: "$$", display: true }
+                    ],
+                    throwOnError: false,
+                    ignoredTags: [
+                        "script", "noscript", "style",
+                        "textarea", "pre", "code"
+                    ]
+                });
+            }
+
+            document.addEventListener("DOMContentLoaded", function () {
+                document.querySelectorAll(".content").forEach(renderMath);
+            });
+
+        </script>
+        
+    </body>
+</html>

@@ -1,0 +1,295 @@
+<!-- Layout for pages  -->
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>
+        {% block title %}
+            SAT × AI
+        {% endblock %}
+    </title>
+
+    <!-- Bootstrap -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <!-- KATEX  -->
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css">
+
+    <script defer
+            src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js">
+    </script>
+
+    <script defer
+            src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js">
+    </script>
+
+
+</head>
+
+<body class="d-flex flex-column min-vh-100 content">
+
+    <!-- ================= HEADER ================= -->
+    <header>
+        <nav class="navbar navbar-expand-lg bg-body border-bottom">
+            <div class="container">
+
+                <!-- Logo -->
+                <a class="navbar-brand fw-bold" href="{% url 'core:index' %}">
+                    SAT × AI
+                </a>
+
+                <!-- Mobile button -->
+                <button
+                    class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarContent"
+                >
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Navigation -->
+                <div class="collapse navbar-collapse" id="navbarContent">
+
+                    <ul class="navbar-nav ms-auto align-items-center">
+
+                        <!-- Main navigation -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'core:index' %}">
+                                Home
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'core:practice' %}">
+                                Practice
+                            </a>
+                        </li>
+
+                        {% if user.is_authenticated %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'core:progress' %}">
+                                    Progress
+                                </a>
+                            </li>
+                        {% endif %}
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'core:about' %}">
+                                About
+                            </a>
+                        </li>
+
+                        <!-- Account -->
+                        {% if user.is_authenticated %}
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle"
+                                href="#"
+                                role="button"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                    {{ user.username|title }}
+                                </a>
+
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li>
+                                        <a class="dropdown-item" href="{% url 'core:profile' %}">
+                                            Profile
+                                        </a>
+                                    </li>
+
+                                    <li><hr class="dropdown-divider"></li>
+
+                                    <li>
+                                        <form method="post" action="{% url 'accounts:logout' %}">
+                                            {% csrf_token %}
+                                            <button type="submit" class="dropdown-item">
+                                                Log out
+                                            </button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </li>
+
+                        {% else %}
+                            <li class="nav-item ms-lg-2">
+                                <a class="btn btn-secondary px-3"
+                                href="{% url 'accounts:login' %}">
+                                    Log in
+                                </a>
+                            </li>
+                        {% endif %}
+
+                        <!-- Theme Toggle -->
+                        <li class="nav-item ms-lg-2">
+                            <button
+                                id="theme-toggle"
+                                class="btn btn-outline-secondary btn-sm rounded-circle d-flex align-items-center justify-content-center"
+                                type="button"
+                                aria-label="Toggle theme"
+                                style="width: 38px; height: 38px;">
+                                <i id="theme-icon" class="bi bi-moon-fill"></i>
+                            </button>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+
+    <!-- ================= MAIN CONTENT ================= -->
+    <main class="container py-5">
+
+        {% block content %}
+        {% endblock %}
+
+    </main>
+
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="bg-body-tertiary border-top mt-auto">
+
+        <div class="container py-5">
+
+            <div class="row">
+
+                <!-- Brand -->
+                <div class="col-md-5 mb-4">
+                    <h5 class="fw-bold">SAT × AI</h5>
+
+                    <p class="text-secondary">
+                        Practice smarter. <br/>
+                        Understand better. <br/>
+                        Boost your score with AI.
+                    </p>
+                </div>
+
+                <!-- Practice -->
+                <div class="col-md-2 mb-4">
+                    <h6>Practice</h6>
+
+                    <ul class="list-unstyled">
+                        <li>
+                            <a href="{% url 'core:practice' %}" class="text-secondary text-decoration-none">
+                                Questions
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="{% url 'core:progress' %}" class="text-secondary text-decoration-none">
+                                Progress
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Resources -->
+                <div class="col-md-2 mb-4">
+                    <h6>Resources</h6>
+
+                    <ul class="list-unstyled">
+
+                        <li>
+                            <a href="{% url 'core:credit' %}" class="text-secondary text-decoration-none">
+                                Credit Source
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="{% url 'core:ai_assistant' %}" class="text-secondary text-decoration-none">
+                                AI Assistant
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="{% url 'core:tools' %}" class="text-secondary text-decoration-none">
+                                Study Tools
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Project -->
+                <div class="col-md-3 mb-4">
+                    <h6>Project</h6>
+
+                    <ul class="list-unstyled">
+                        <li>
+                            <a href="{% url 'core:about' %}" class="text-secondary text-decoration-none">
+                                About
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="#" class="text-secondary text-decoration-none">
+                                GitHub
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <hr class="border-secondary">
+
+            <div class="d-flex justify-content-between text-secondary">
+                <small>© 2026 SAT × AI</small>
+                <small>Built with &#x2665;&#xfe0f;</small>
+            </div>
+
+        </div>
+
+    </footer>
+
+
+    <!-- Bootstrap JavaScript -->
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+    </script>
+
+    <!-- JS -->
+    <script src="{% static 'js/script.js' %}"></script>
+    <script>
+        // Render Math 
+        function renderMath(element) {
+            if (!element || !window.renderMathInElement) return;
+
+            renderMathInElement(element, {
+                delimiters: [
+                    { left: "\\(", right: "\\)", display: false },
+                    { left: "\\[", right: "\\]", display: true },
+                    { left: "$$", right: "$$", display: true }
+                ],
+                throwOnError: false,
+                ignoredTags: [
+                    "script", "noscript", "style",
+                    "textarea", "pre", "code"
+                ]
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll(".content").forEach(renderMath);
+        });
+    </script>
+
+</body>
+</html>
+

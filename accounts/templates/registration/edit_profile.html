@@ -1,0 +1,158 @@
+<!-- Edit Profile Page -->
+
+{% extends "core/layout.html" %}
+
+{% block title %}
+    Edit Profile
+{% endblock %}
+
+{% block content %}
+    <div class="container py-5" style="max-width: 760px;">
+
+        <!-- Page Header -->
+        <div class="mb-4">
+            <h2 class="fw-bold mb-1">Edit Profile</h2>
+            <p class="text-secondary mb-0">
+                Update your username and manage your password.
+            </p>
+        </div>
+
+        <!-- Display Messages -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show"
+                    role="alert">
+                    {{ message }}
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="alert"
+                            aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <!-- Edit Username -->
+        <div class="card border shadow-sm mb-4">
+            <div class="card-body p-4 p-md-5">
+
+                <div class="d-flex align-items-center gap-3 mb-4">
+                    <i class="bi bi-person-gear fs-3 text-secondary"></i>
+                    <div>
+                        <h5 class="fw-bold mb-1">Username</h5>
+                        <p class="text-secondary mb-0">
+                            Change your account username.
+                        </p>
+                    </div>
+                </div>
+
+                <hr class="mb-4">
+
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden"
+                        name="action"
+                        value="edit_username">
+
+                    <div class="mb-4">
+                        <label for="{{ username_form.username.id_for_label }}"
+                            class="form-label fw-semibold">
+                            New Username
+                        </label>
+
+                        {{ username_form.username }}
+
+                        {% for error in username_form.username.errors %}
+                            <div class="text-danger small mt-1">
+                                {{ error }}
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="d-flex justify-content-end">
+                        <button type="submit"
+                                class="btn btn-secondary px-4">
+                            <i class="bi bi-check2 me-2"></i>
+                            Save Username
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+        <!-- Change Password -->
+        <div class="card border shadow-sm">
+            <div class="card-body p-4 p-md-5">
+
+                <div class="d-flex align-items-center gap-3 mb-4">
+                    <i class="bi bi-shield-lock fs-3 text-secondary"></i>
+                    <div>
+                        <h5 class="fw-bold mb-1">Change Password</h5>
+                        <p class="text-secondary mb-0">
+                            Update your account password securely.
+                        </p>
+                    </div>
+                </div>
+
+                <hr class="mb-4">
+
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden"
+                        name="action"
+                        value="change_password">
+
+                    {% for field in password_form %}
+                        <div class="mb-3">
+                            <label for="{{ field.id_for_label }}"
+                                class="form-label fw-semibold">
+                                {{ field.label }}
+                            </label>
+
+                            {{ field }}
+
+                            {% if field.help_text %}
+                                <div class="form-text">
+                                    {{ field.help_text|safe }}
+                                </div>
+                            {% endif %}
+
+                            {% for error in field.errors %}
+                                <div class="text-danger small mt-1">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+
+                    {% if password_form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {% for error in password_form.non_field_errors %}
+                                <div>{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <div class="d-flex justify-content-end">
+                        <button type="submit"
+                                class="btn btn-secondary px-4">
+                            <i class="bi bi-shield-check me-2"></i>
+                            Update Password
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+        <!-- Back Button -->
+        <div class="mt-4">
+            <a href="{% url 'core:profile' %}"
+            class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left me-2"></i>
+                Back to Profile
+            </a>
+        </div>
+
+    </div>
+{% endblock %}

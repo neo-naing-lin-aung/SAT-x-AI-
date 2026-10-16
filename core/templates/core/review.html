@@ -1,0 +1,538 @@
+<!-- Review Page -->
+{% extends "core/layout.html" %}
+
+{% block title %}
+    Review
+{% endblock %}
+
+{% block content %}
+    <div class="container py-4">
+
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="fw-bold mb-1">Question Review</h2>
+                <p class="text-secondary mb-0">
+                    Review your answers and learn from your mistakes.
+                </p>
+            </div>
+
+            <button class="btn btn-secondary"
+                    type="button"
+                    data-bs-toggle="offcanvas"
+                    data-bs-target="#aiSidebar">
+                <i class="bi bi-robot me-2"></i>Ask AI
+            </button>
+        </div>
+
+        <!-- Question Status -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <span class="text-secondary small">
+                Question {{ question_number }} of {{ total_questions }}
+            </span>
+
+            {% if user_answer == answer and user_answer %}
+                <span class="badge text-bg-success">Correct</span>
+            {% elif user_answer %}
+                <span class="badge text-bg-danger">Incorrect</span>
+            {% else %}
+                <span class="badge text-bg-secondary">Unanswered</span>
+            {% endif %}
+        </div>
+
+        <!-- Question Card -->
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-4 p-md-5">
+
+                <h5 class="fw-bold mb-4">
+                    {{ question|linebreaksbr }}
+                </h5>
+
+                <!-- Multiple-Choice Answers -->
+                {% if choice_a or choice_b or choice_c or choice_d %}
+
+                <div class="d-grid gap-3">
+
+                    <!-- Choice A -->
+                    <div class="border rounded-3 p-3
+                        {% if answer == 'A' %}
+                            border-success bg-success-subtle
+                        {% elif user_answer == 'A' %}
+                            border-danger bg-danger-subtle
+                        {% endif %}">
+                        <div class="d-flex justify-content-between align-items-center gap-3">
+                            <div>
+                                <strong class="me-2">A.</strong>{{ choice_a }}
+                            </div>
+
+                            <div class="text-nowrap">
+                                {% if answer == 'A' %}
+                                    <span class="badge text-bg-success">Correct</span>
+                                {% endif %}
+                                {% if user_answer == 'A' %}
+                                    <span class="badge text-bg-danger">Your answer</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Choice B -->
+                    <div class="border rounded-3 p-3
+                        {% if answer == 'B' %}
+                            border-success bg-success-subtle
+                        {% elif user_answer == 'B' %}
+                            border-danger bg-danger-subtle
+                        {% endif %}">
+                        <div class="d-flex justify-content-between align-items-center gap-3">
+                            <div>
+                                <strong class="me-2">B.</strong>{{ choice_b }}
+                            </div>
+
+                            <div class="text-nowrap">
+                                {% if answer == 'B' %}
+                                    <span class="badge text-bg-success">Correct</span>
+                                {% endif %}
+                                {% if user_answer == 'B' %}
+                                    <span class="badge text-bg-danger">Your answer</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Choice C -->
+                    <div class="border rounded-3 p-3
+                        {% if answer == 'C' %}
+                            border-success bg-success-subtle
+                        {% elif user_answer == 'C' %}
+                            border-danger bg-danger-subtle
+                        {% endif %}">
+                        <div class="d-flex justify-content-between align-items-center gap-3">
+                            <div>
+                                <strong class="me-2">C.</strong>{{ choice_c }}
+                            </div>
+
+                            <div class="text-nowrap">
+                                {% if answer == 'C' %}
+                                    <span class="badge text-bg-success">Correct</span>
+                                {% endif %}
+                                {% if user_answer == 'C' %}
+                                    <span class="badge text-bg-danger">Your answer</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Choice D -->
+                    <div class="border rounded-3 p-3
+                        {% if answer == 'D' %}
+                            border-success bg-success-subtle
+                        {% elif user_answer == 'D' %}
+                            border-danger bg-danger-subtle
+                        {% endif %}">
+                        <div class="d-flex justify-content-between align-items-center gap-3">
+                            <div>
+                                <strong class="me-2">D.</strong>{{ choice_d }}
+                            </div>
+
+                            <div class="text-nowrap">
+                                {% if answer == 'D' %}
+                                    <span class="badge text-bg-success">Correct</span>
+                                {% endif %}
+                                {% if user_answer == 'D' %}
+                                    <span class="badge text-bg-danger">Your answer</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                {% else %}
+
+                <!-- Fill-in-the-Blank Answer -->
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="border rounded-3 p-3 h-100">
+                            <p class="text-secondary small mb-2">Your answer</p>
+                            <p class="fw-semibold mb-0">
+                                {% if user_answer %}
+                                    {{ user_answer }}
+                                {% else %}
+                                    <span class="text-secondary">Unanswered</span>
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="border border-success rounded-3 p-3 h-100">
+                            <p class="text-secondary small mb-2">Correct answer</p>
+                            <p class="fw-semibold text-success mb-0">
+                                {{ answer }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                {% endif %}
+
+                <!-- Navigation -->
+                <div class="d-flex justify-content-between align-items-center mt-5 pt-3 border-top">
+
+                    <!-- Back to Results -->
+                    <a href="{% url 'core:practice_result' practice.id %}"
+                    class="btn btn-outline-secondary">
+                        Results
+                    </a>
+
+                    <div class="d-flex align-items-center gap-3">
+
+                        <!-- Previous -->
+                        {% if question_number > 1 %}
+                            <a href="{% url 'core:review' practice.id question_number|add:'-1' %}"
+                            class="btn btn-outline-secondary">
+                                Previous
+                            </a>
+                        {% else %}
+                            <button class="btn btn-outline-secondary" disabled>
+                                Previous
+                            </button>
+                        {% endif %}
+
+                        <!-- Next -->
+                        {% if question_number < total_questions %}
+                            <a href="{% url 'core:review' practice.id question_number|add:'1' %}"
+                            class="btn btn-secondary">
+                                Next
+                            </a>
+                        {% endif %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Tutor Sidebar -->
+    <div class="offcanvas offcanvas-end"
+        tabindex="-1"
+        id="aiSidebar"
+        aria-labelledby="aiSidebarLabel"
+        style="--bs-offcanvas-width: 420px;">
+
+        <!-- Sidebar Header -->
+        <div class="offcanvas-header border-bottom">
+            <div class="d-flex align-items-center gap-3">
+                <div class="bg-secondary-subtle text-secondary rounded-circle
+                            d-flex align-items-center justify-content-center"
+                    style="width: 44px; height: 44px;">
+                    <i class="bi bi-robot fs-4"></i>
+                </div>
+
+                <div>
+                    <h5 class="offcanvas-title fw-bold mb-0"
+                        id="aiSidebarLabel">SAT AI Tutor</h5>
+                    <small class="text-secondary">Your personal study assistant</small>
+                </div>
+            </div>
+
+            <button type="button"
+                    class="btn-close"
+                    data-bs-dismiss="offcanvas"
+                    aria-label="Close"></button>
+        </div>
+
+        <!-- Chat Body -->
+        <div class="offcanvas-body d-flex flex-column p-0">
+
+            <div id="aiChatMessages"
+                class="flex-grow-1 overflow-auto p-3"
+                aria-live="polite">
+
+                <div class="d-flex gap-2 mb-3">
+                    <div class="bg-secondary-subtle text-secondary rounded-circle
+                                d-flex align-items-center justify-content-center
+                                flex-shrink-0"
+                        style="width: 32px; height: 32px;">
+                        <i class="bi bi-robot"></i>
+                    </div>
+
+                    <div class="bg-body-tertiary rounded-3 p-3">
+                        <p class="mb-0">
+                            Hi! I can help you understand this question.
+                            Choose an explanation below or ask me anything.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Input Section -->
+            <div class="border-top p-3">
+
+                <!-- Quick Actions -->
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                    <button type="button"
+                            class="btn btn-sm btn-outline-secondary ai-prompt"
+                            data-prompt="Explain this SAT question simply, step by step. Use easy English.">
+                        <i class="bi bi-lightbulb me-1"></i>Explain simply
+                    </button>
+
+                    <button type="button"
+                            class="btn btn-sm btn-outline-secondary ai-prompt"
+                            data-prompt="Explain why my answer is correct or incorrect. Compare my answer with the correct answer and show the reasoning.">
+                        <i class="bi bi-search me-1"></i>Explain my mistake
+                    </button>
+                </div>
+
+                <!-- Chat Form -->
+                <form id="aiChatForm">
+                    {% csrf_token %}
+
+                    <div class="border rounded-3 p-2">
+                        <textarea id="aiMessageInput"
+                                class="form-control border-0 shadow-none"
+                                rows="3"
+                                maxlength="2000"
+                                placeholder="Ask a follow-up question..."
+                                aria-label="Ask your AI tutor"></textarea>
+
+                        <div class="d-flex justify-content-between align-items-center mt-2">
+                            <small class="text-secondary">SAT × AI</small>
+
+                            <button type="submit"
+                                    id="aiSendButton"
+                                    class="btn btn-secondary btn-sm">
+                                Send<i class="bi bi-send ms-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+                <p class="text-secondary small mt-2 mb-0">
+                    AI can make mistakes. Check important answers.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Chat Frontend -->
+
+    <!-- Mark down parser  -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <!-- HTML sanitizer -->
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.8/dist/purify.min.js"></script>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("aiChatForm");
+        const input = document.getElementById("aiMessageInput");
+        const messages = document.getElementById("aiChatMessages");
+        const sendButton = document.getElementById("aiSendButton");
+        const quickButtons = document.querySelectorAll(".ai-prompt");
+
+        let isSending = false;
+        
+        // Render KaTeX Math 
+        function renderMath(element) {
+            if (!window.renderMathInElement) {
+                console.error("KaTeX auto-render is not loaded.");
+                return;
+            }
+
+            renderMathInElement(element, {
+                delimiters: [
+                    { left: "$$", right: "$$", display: true },
+                    { left: "[", right: "]", display: true },
+                    { left: "\\(", right: "\\)", display: false },
+                    { left: "$", right: "$", display: false }
+                ],
+                throwOnError: false,
+                ignoredTags: [
+                    "script", "noscript", "style", "textarea", "pre", "code"
+                ]
+            });
+        }
+
+        function normalizeMath(text) {
+            if (!text) return "";
+
+            // 1. Standardize Display/Block Math
+            // Catches $$...$$, [...], and single-backslashed [...] and turns them into clean [...]
+            text = text.replace(/\$\$([\s\S]*?)\$\$|\\+\[([\s\S]*?)\\+\]/g, (match, p1, p2) => {
+                const content = p1 || p2;
+                return `\\[${content.trim()}\\]`;
+            });
+
+            // 2. Catch bracketed math missing backslashes entirely (e.g., [ x^2 + y^2 ]) if it contains math commands
+            text = text.replace(/^[ \t]*\[([^[\]]+)\][ \t]*$/gm, (match, content) => {
+                if (/\\(?:frac|sqrt|sum|int|begin|cdot|times|neq|leq|geq|pm|div|[a-zA-Z]+)\b/.test(content)) {
+                    return `\\[${content.trim()}\\]`;
+                }
+                return match;
+            });
+
+            // 3. Standardize Inline Math Delimiters
+            // Catches both \\(...) and single-backslashed \(...\) and normalizes them to \\(...\\)
+            text = text.replace(/\\+\(([\s\S]*?)\\+\)/g, (match, content) => {
+                return `\\(${content.trim()}\\)`;
+            });
+
+            // 4. Fix Parenthetical Math Artifacts 
+            // Catches when Gemini wraps LaTeX commands in standard parentheses like ( \frac{7x^2}{x} )
+            text = text.replace(/\(\s*(\\(?:frac\vert{}sqrt\vert{}sum\vert{}int\vert{}cdot\vert{}times\vert{}neq\vert{}leq\vert{}geq\vert{}pm\vert{}div\vert{}[a-zA-Z]+)\b[^()\n]*)\s*\)/g, (match, content) => {
+                return `\\(${content.trim()}\\)`;
+            });
+
+            return text;
+        }
+
+        // Create chat message bubbles safely.
+        function addMessage(text, sender, isMarkdown = false) {
+            const row = document.createElement("div");
+            row.className = "d-flex gap-2 mb-3";
+
+            const bubble = document.createElement("div");
+            bubble.className = "rounded-3 p-3";
+            bubble.style.maxWidth = "85%";
+            bubble.style.overflowWrap = "anywhere";
+
+            if (sender === "assistant" && isMarkdown) {
+                const formattedText = normalizeMath(text);
+
+                if (typeof marked !== "undefined" && window.DOMPurify) {
+                    const html = marked.parse(formattedText);
+                    bubble.innerHTML = window.DOMPurify.sanitize(html);
+                    renderMath(bubble);
+                } else {
+                    bubble.textContent = formattedText;
+                }
+            } else {
+                bubble.style.whiteSpace = "pre-wrap";
+                bubble.textContent = text;
+            }
+
+            if (sender === "user") {
+                row.classList.add("justify-content-end");
+                bubble.classList.add("bg-secondary", "text-white");
+            } else {
+                bubble.classList.add("bg-body-tertiary");
+
+                const icon = document.createElement("div");
+                icon.className =
+                    "bg-secondary-subtle text-secondary rounded-circle " +
+                    "d-flex align-items-center justify-content-center flex-shrink-0";
+                icon.style.width = "32px";
+                icon.style.height = "32px";
+                icon.innerHTML = '<i class="bi bi-robot"></i>';
+
+                row.appendChild(icon);
+            }
+
+            row.appendChild(bubble);
+            messages.appendChild(row);
+            messages.scrollTop = messages.scrollHeight;
+
+            return row;
+        }
+
+        async function sendMessage(message) {
+            message = message.trim();
+
+            if (!message || isSending) return;
+
+            isSending = true;
+            sendButton.disabled = true;
+            quickButtons.forEach(button => button.disabled = true);
+
+            addMessage(message, "user");
+            input.value = "";
+
+            const loading = addMessage("Thinking...", "assistant");
+
+            try {
+                const response = await fetch("{% url 'core:ai_chat' %}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": form.querySelector(
+                            '[name="csrfmiddlewaretoken"]'
+                        ).value
+                    },
+                    body: JSON.stringify({
+                        message: message,
+                        question: document.getElementById("question-data").textContent,
+                        correct_answer: document.getElementById("correct-answer-data").textContent,
+                        choice_a: document.getElementById("choice-a-data").textContent,
+                        choice_b: document.getElementById("choice-b-data").textContent,
+                        choice_c: document.getElementById("choice-c-data").textContent,
+                        choice_d: document.getElementById("choice-d-data").textContent,
+                        user_answer: document.getElementById("user-answer-data").textContent,
+                    })
+                });
+
+                const responseText = await response.text();
+
+                if (!response.ok) {
+                    throw new Error(
+                        `AI request failed (${response.status}): ${responseText}`
+                    );
+                }
+
+                const data = JSON.parse(responseText);
+                loading.remove();
+
+                addMessage(
+                    data.reply || "No response was returned.",
+                    "assistant",
+                    true
+                );
+
+            } catch (error) {
+                loading.remove();
+                addMessage(
+                    "Sorry, I couldn't get a response. Please try again.",
+                    "assistant"
+                );
+                console.error(error);
+
+            } finally {
+                isSending = false;
+                sendButton.disabled = false;
+                quickButtons.forEach(button => button.disabled = false);
+            }
+        }
+
+        form.addEventListener("submit", function (event) {
+            event.preventDefault();
+            sendMessage(input.value);
+        });
+
+        quickButtons.forEach(button => {
+            button.addEventListener("click", function () {
+                sendMessage(button.dataset.prompt);
+            });
+        });
+
+        input.addEventListener("keydown", function (event) {
+            if (event.key === "Enter" &&
+                !event.shiftKey &&
+                !event.isComposing) {
+                event.preventDefault();
+                form.requestSubmit();
+            }
+        });
+    });
+    </script>
+
+    {{ question|default:""|json_script:"question-data" }}
+    {{ answer|default:""|json_script:"correct-answer-data" }}
+    {{ choice_a|default:""|json_script:"choice-a-data"}}
+    {{ choice_b|default:""|json_script:"choice-b-data"}}
+    {{ choice_c|default:""|json_script:"choice-c-data"}}
+    {{ choice_d|default:""|json_script:"choice-d-data"}}
+    {{ user_answer|default:""|json_script:"user-answer-data" }}
+
+
+{% endblock %}

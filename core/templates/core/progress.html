@@ -1,0 +1,577 @@
+<!-- Progress Page -->
+
+{% extends "core/layout.html" %}
+
+{% block title %}
+    Progress
+{% endblock %}
+
+{% block content %}
+
+    <div class="container py-5">
+
+        <!-- ========================= -->
+        <!-- Page Header -->
+        <!-- ========================= -->
+
+        <div class="text-center mb-5">
+
+            <h1 class="fw-bold">
+                Progress
+            </h1>
+
+            <p class="text-body-secondary mb-0">
+                Track your SAT practice and see how you are improving.
+            </p>
+
+        </div>
+
+
+        <!-- ========================= -->
+        <!-- Overall Progress -->
+        <!-- ========================= -->
+
+        <div class="card shadow-sm border-0 mb-4">
+
+            <div class="card-body p-4">
+
+                <div class="d-flex justify-content-between align-items-center mb-3">
+
+                    <div>
+                        <h5 class="fw-bold mb-1">
+                            Overall Progress
+                        </h5>
+
+                        <div class="text-body-secondary small">
+                            Your performance across all practice questions.
+                        </div>
+                    </div>
+
+                    <div class="text-end">
+                        <div class="fs-2 fw-bold text-secondary">
+                            {{ accuracy }}%
+                        </div>
+
+                        <div class="text-body-secondary small">
+                            Accuracy
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Progress Bar -->
+
+                <div
+                    class="progress"
+                    role="progressbar"
+                    aria-label="Overall accuracy"
+                    aria-valuenow="{{ accuracy }}"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                >
+                    <div
+                        class="progress-bar bg-secondary"
+                        style="width: {{ accuracy }}%"
+                    >
+                        {{ accuracy }}%
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ========================= -->
+        <!-- Overall Statistics -->
+        <!-- ========================= -->
+
+        <div class="row g-3 mb-5">
+
+            <!-- Answered -->
+
+            <div class="col-6 col-md-3">
+
+                <div class="card h-100 text-center shadow-sm border-0">
+
+                    <div class="card-body">
+
+                        <div class="fs-2 fw-bold">
+                            {{ answered }}
+                        </div>
+
+                        <div class="text-body-secondary">
+                            Answered
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Correct -->
+
+            <div class="col-6 col-md-3">
+
+                <div class="card h-100 text-center shadow-sm border-0">
+
+                    <div class="card-body">
+
+                        <div class="fs-2 fw-bold text-success">
+                            {{ correct }}
+                        </div>
+
+                        <div class="text-body-secondary">
+                            Correct
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Incorrect -->
+
+            <div class="col-6 col-md-3">
+
+                <div class="card h-100 text-center shadow-sm border-0">
+
+                    <div class="card-body">
+
+                        <div class="fs-2 fw-bold text-danger">
+                            {{ incorrect }}
+                        </div>
+
+                        <div class="text-body-secondary">
+                            Incorrect
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Practices -->
+
+            <div class="col-6 col-md-3">
+
+                <div class="card h-100 text-center shadow-sm border-0">
+
+                    <div class="card-body">
+
+                        <div class="fs-2 fw-bold">
+                            {{ total_practices }}
+                        </div>
+
+                        <div class="text-body-secondary">
+                            Practices
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ========================= -->
+        <!-- Reading and Writing -->
+        <!-- ========================= -->
+
+        <div class="card shadow-sm border-0 mb-4">
+
+            <div class="card-body p-4">
+
+                <div class="d-flex justify-content-between align-items-center mb-4">
+
+                    <div>
+                        <h5 class="fw-bold mb-1">
+                            Reading and Writing
+                        </h5>
+
+                        <div class="text-body-secondary small">
+                            Performance by domain.
+                        </div>
+                    </div>
+
+                    <span class="badge text-bg-secondary">
+                        {{ rw_accuracy }}%
+                    </span>
+
+                </div>
+
+
+                <div class="row g-4">
+
+                    <!-- Information and Ideas -->
+
+                    <div class="col-12 col-md-6">
+
+                        <div class="d-flex justify-content-between mb-2">
+
+                            <span class="fw-semibold">
+                                Information and Ideas
+                            </span>
+
+                            <span class="text-body-secondary">
+                                {{ information_accuracy }}%
+                            </span>
+
+                        </div>
+
+                        <div class="progress">
+
+                            <div
+                                class="progress-bar bg-secondary"
+                                style="width: {{ information_accuracy }}%"
+                            >
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Craft and Structure -->
+
+                    <div class="col-12 col-md-6">
+
+                        <div class="d-flex justify-content-between mb-2">
+
+                            <span class="fw-semibold">
+                                Craft and Structure
+                            </span>
+
+                            <span class="text-body-secondary">
+                                {{ craft_accuracy }}%
+                            </span>
+
+                        </div>
+
+                        <div class="progress">
+
+                            <div
+                                class="progress-bar bg-secondary"
+                                style="width: {{ craft_accuracy }}%"
+                            >
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Expression of Ideas -->
+
+                    <div class="col-12 col-md-6">
+
+                        <div class="d-flex justify-content-between mb-2">
+
+                            <span class="fw-semibold">
+                                Expression of Ideas
+                            </span>
+
+                            <span class="text-body-secondary">
+                                {{ expression_accuracy }}%
+                            </span>
+
+                        </div>
+
+                        <div class="progress">
+
+                            <div
+                                class="progress-bar bg-secondary"
+                                style="width: {{ expression_accuracy }}%"
+                            >
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Standard English Conventions -->
+
+                    <div class="col-12 col-md-6">
+
+                        <div class="d-flex justify-content-between mb-2">
+
+                            <span class="fw-semibold">
+                                Standard English Conventions
+                            </span>
+
+                            <span class="text-body-secondary">
+                                {{ sec_accuracy }}%
+                            </span>
+
+                        </div>
+
+                        <div class="progress">
+
+                            <div
+                                class="progress-bar bg-secondary"
+                                style="width: {{ sec_accuracy }}%"
+                            >
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ========================= -->
+        <!-- Math -->
+        <!-- ========================= -->
+
+        <div class="card shadow-sm border-0 mb-5">
+
+            <div class="card-body p-4">
+
+                <div class="d-flex justify-content-between align-items-center mb-4">
+
+                    <div>
+                        <h5 class="fw-bold mb-1">
+                            Math
+                        </h5>
+
+                        <div class="text-body-secondary small">
+                            Performance by domain.
+                        </div>
+                    </div>
+
+                    <span class="badge text-bg-secondary">
+                        {{ math_accuracy }}%
+                    </span>
+
+                </div>
+
+
+                <div class="row g-4">
+
+                    <!-- Algebra -->
+
+                    <div class="col-12 col-md-6">
+
+                        <div class="d-flex justify-content-between mb-2">
+
+                            <span class="fw-semibold">
+                                Algebra
+                            </span>
+
+                            <span class="text-body-secondary">
+                                {{ algebra_accuracy }}%
+                            </span>
+
+                        </div>
+
+                        <div class="progress">
+
+                            <div
+                                class="progress-bar bg-secondary"
+                                style="width: {{ algebra_accuracy }}%"
+                            >
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Advanced Math -->
+
+                    <div class="col-12 col-md-6">
+
+                        <div class="d-flex justify-content-between mb-2">
+
+                            <span class="fw-semibold">
+                                Advanced Math
+                            </span>
+
+                            <span class="text-body-secondary">
+                                {{ advanced_math_accuracy }}%
+                            </span>
+
+                        </div>
+
+                        <div class="progress">
+
+                            <div
+                                class="progress-bar bg-secondary"
+                                style="width: {{ advanced_math_accuracy }}%"
+                            >
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- PSDA -->
+
+                    <div class="col-12 col-md-6">
+
+                        <div class="d-flex justify-content-between mb-2">
+
+                            <span class="fw-semibold">
+                                Problem-Solving and Data Analysis
+                            </span>
+
+                            <span class="text-body-secondary">
+                                {{ psda_accuracy }}%
+                            </span>
+
+                        </div>
+
+                        <div class="progress">
+
+                            <div
+                                class="progress-bar bg-secondary"
+                                style="width: {{ psda_accuracy }}%"
+                            >
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Geometry and Trigonometry -->
+
+                    <div class="col-12 col-md-6">
+
+                        <div class="d-flex justify-content-between mb-2">
+
+                            <span class="fw-semibold">
+                                Geometry and Trigonometry
+                            </span>
+
+                            <span class="text-body-secondary">
+                                {{ geometry_accuracy }}%
+                            </span>
+
+                        </div>
+
+                        <div class="progress">
+
+                            <div
+                                class="progress-bar bg-secondary"
+                                style="width: {{ geometry_accuracy }}%"
+                            >
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ========================= -->
+        <!-- Recent Practice -->
+        <!-- ========================= -->
+
+        <div class="card shadow-sm border-0">
+
+            <div class="card-body p-4">
+
+                <h5 class="fw-bold mb-4">
+                    Recent Practice
+                </h5>
+
+                <div class="table-responsive">
+
+                    <table class="table table-hover align-middle">
+
+                        <thead>
+
+                            <tr>
+                                <th scope="col">Date</th>
+                                <th scope="col">Questions</th>
+                                <th scope="col">Correct</th>
+                                <th scope="col">Accuracy</th>
+                                <th scope="col" class="text-end">Action</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            {% for practice in recent_practices %}
+
+                            <tr>
+
+                                <td>
+                                    {{ practice.started_at|date:"M d, Y" }}
+                                </td>
+
+                                <td>
+                                    {{ practice.number_of_question }}
+                                </td>
+
+                                <td class="text-success fw-semibold">
+                                    {{ practice.correct }}
+                                </td>
+
+                                <td>
+                                    {{ practice.accuracy }}%
+                                </td>
+
+                                <td class="text-end">
+
+                                    <a
+                                        href="{% url 'core:practice_result' practice.id %}"
+                                        class="btn btn-sm btn-secondary"
+                                    >
+                                        View
+                                    </a>
+
+                                </td>
+
+                            </tr>
+
+                            {% empty %}
+
+                            <tr>
+
+                                <td
+                                    colspan="5"
+                                    class="text-center text-body-secondary py-4"
+                                >
+                                    No practice sessions yet.
+                                </td>
+
+                            </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+{% endblock %}
