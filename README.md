@@ -153,8 +153,8 @@ SAT-x-AI/
 ### 1. Clone the repository
 
 ``` bash
-git clone https://github.com/YOUR-USERNAME/YOUR-REPOSITORY.git
-cd YOUR-REPOSITORY
+git clone https://github.com/neo-naing-lin-aung/SAT-x-AI-.git
+cd SAT-x-AI-
 ```
 
 Replace the URL and directory name with your actual GitHub repository
